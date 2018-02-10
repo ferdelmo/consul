@@ -77,17 +77,8 @@ module CommonActions
     user ||= create(:user)
 
     login_as(user)
-    commentable_path = if commentable.is_a?(Proposal)
-                         proposal_path(commentable)
-                       elsif commentable.is_a?(Debate)
-                         debate_path(commentable)
-                       elsif commentable.is_a?(Topic)
-                         community_topic_path(commentable, community_id: commentable.community_id)
-                       elsif commentable.is_a?(Poll)
-                         poll_path(commentable)
-                       else
-                         budget_investment_path(commentable.budget, commentable)
-                       end
+
+    commentable_path = commentable.respond_to?(:path) ? commentable.path : commentable
     visit commentable_path
 
     fill_in "comment-body-#{commentable.class.name.gsub(/::/, '_').downcase}_#{commentable.id}", with: 'Have you thought about...?'
@@ -338,23 +329,6 @@ module CommonActions
 
   def comment_body(resource)
     "comment-body-#{resource.class.name.parameterize('_').to_sym}_#{resource.id}"
-  end
-
-  def path_for(resource)
-    nested_path_for(resource) || url_for([resource, only_path: true])
-  end
-
-  def nested_path_for(resource)
-    case resource.class.name
-    when "Legislation::Question"
-      legislation_process_question_path(resource.process, resource)
-    when "Legislation::Proposal"
-      legislation_process_proposal_path(resource.process, resource)
-    when "Budget::Investment"
-      budget_investment_path(resource.budget, resource)
-    else
-      false
-    end
   end
 
 end
