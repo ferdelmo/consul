@@ -94,4 +94,6 @@ group :development do
   gem 'web-console', '~> 3.3.0'
 end
 
+gem 'net-ldap', '~> 0.15.0'
+
 eval_gemfile './Gemfile_custom'
