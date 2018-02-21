@@ -1187,6 +1187,11 @@ ActiveRecord::Schema.define(version: 20180129190950) do
   add_index "votes", ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope", using: :btree
   add_index "votes", ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope", using: :btree
 
+  create_table "censos" do |t|
+    t.integer "NIP"
+    t.integer "grupo"
+  end
+  
   add_foreign_key "administrators", "users"
   add_foreign_key "annotations", "legacy_legislations"
   add_foreign_key "annotations", "users"
