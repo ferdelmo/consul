@@ -7,7 +7,11 @@ class Users::SessionsController < Devise::SessionsController
     User.find_by username: params[:user][:login]
 
     grupoAsociado=Geozone.find_by id: params[:grupo]
-    censo_code=grupoAsociado[:census_code]
+    if grupoAsociado
+    	censo_code=grupoAsociado[:census_code]
+    else 
+    	censo_code=-1;
+    end
     resul=Censo.find_by NIP: params[:user][:login], grupo: censo_code
     grupo=(params[:user][:login]=='admin' || resul);
     #censo=IO.readlines("/home/pruebasae/censo.txt")
